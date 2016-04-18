@@ -30,8 +30,8 @@ namespace Rasterizer
         {
             //Kubus();
             //Kegel();
-            //Cilinder();
-            Bol();
+            Cilinder();
+            //Bol();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -265,7 +265,32 @@ namespace Rasterizer
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)
         {
+            switch(e.KeyChar)
+            {
+                case '1':
+                    clearLists();
+                    Kubus();
+                    break;
+                case '2':
+                    clearLists();
+                    Kegel();
+                    break;
+                case '3':
+                    clearLists();
+                    Cilinder();
+                    break;
+                case '4':
+                    clearLists();
+                    Bol();
+                    break;
+            }
+        }
 
+        private void clearLists()
+        {
+            vertices.Clear();
+            polygons.Clear();
+            dinges.Clear();
         }
 
         private void Form1_KeyUp(object sender, KeyEventArgs e)
