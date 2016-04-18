@@ -24,7 +24,7 @@ namespace Rasterizer
         float rotationDelta = 0.05f;
 
         List<Vector3> dinges = new List<Vector3>();
-
+        bool showVerticals = true;
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -57,24 +57,28 @@ namespace Rasterizer
 
             float schermPositieX = 0, schermPositieY = 0;
 
-            foreach (Vector3 v in vertices)
+            if (showVerticals)
             {
-                Vector3 v1 = perspective * translation * rotationMatrix * v;
-                //                Console.WriteLine($"Width: {Width},Height: {Height}");
-                schermPositieX = Width / 2 + v1.x / v1.z * Width / 2;
-                schermPositieY = Height / 2 + v1.y / v1.z * Height / 2;
+                foreach (Vector3 v in vertices)
+                {
+                    Vector3 v1 = perspective * translation * rotationMatrix * v;
+                    //                Console.WriteLine($"Width: {Width},Height: {Height}");
+                    schermPositieX = Width / 2 + v1.x / v1.z * Width / 2;
+                    schermPositieY = Height / 2 + v1.y / v1.z * Height / 2;
 
-                g.DrawRectangle(pen, (int)schermPositieX - 5, (int)schermPositieY - 5, 10, 10);
-            }
+                    g.DrawRectangle(pen, (int)schermPositieX - 5, (int)schermPositieY - 5, 10, 10);
+                }
 
-            foreach (Vector3 v in dinges)
-            {
-                Vector3 v1 = perspective * translation * rotationMatrix * v;
-                //                Console.WriteLine($"Width: {Width},Height: {Height}");
-                schermPositieX = Width / 2 + v1.x / v1.z * Width / 2;
-                schermPositieY = Height / 2 + v1.y / v1.z * Height / 2;
+                foreach (Vector3 v in dinges)
+                {
+                    Vector3 v1 = perspective * translation * rotationMatrix * v;
+                    //                Console.WriteLine($"Width: {Width},Height: {Height}");
+                    schermPositieX = Width / 2 + v1.x / v1.z * Width / 2;
+                    schermPositieY = Height / 2 + v1.y / v1.z * Height / 2;
 
-                g.DrawRectangle(pen, (int)schermPositieX - 5, (int)schermPositieY - 5, 10, 10);
+                    g.DrawRectangle(pen, (int)schermPositieX - 5, (int)schermPositieY - 5, 10, 10);
+                }
+
             }
 
             foreach (var pl in polygons)
@@ -282,6 +286,9 @@ namespace Rasterizer
                 case '4':
                     clearLists();
                     Bol();
+                    break;
+                case 'r':
+                    showVerticals = !showVerticals;
                     break;
             }
         }
