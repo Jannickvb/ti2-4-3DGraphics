@@ -12,14 +12,36 @@ namespace Rasterizer.assets.models
 
         public List<Vector3> vertices { get; }
         public List<List<int>> polygons { get; }
-        public Matrix translation { get; }
 
-        public Object3D()
+        public float x { get; }
+        public float y { get; }
+        public float z { get; }
+        public float rotation { get; set; }
+
+        private Matrix translation = Matrix.identity();
+
+        public Object3D(float x, float y, float z)
+        {
+            vertices = new List<Vector3>();
+            polygons = new List<List<int>>();
+        }
+
+        public void translate(float x, float y, float z)
+        {
+            translation = Matrix.translate(new Vector3(x, y, z));
+        }
+
+        public virtual void Init()
         {
 
         }
 
-        public void Render(Graphics g)
+        public virtual void Update()
+        {
+
+        }
+
+        public virtual void Render(Graphics g)
         {
 
         }
