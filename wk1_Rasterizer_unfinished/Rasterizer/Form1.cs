@@ -19,8 +19,8 @@ namespace Rasterizer
 		}
 		List<Vector3> vertices = new List<Vector3>();
 		List<List<int>> polygons = new List<List<int>>();
-		float rotation = 0;
-
+		float rotationY = 0,rotationX = 0;
+        float rotationDelta = 0.05f;
 
 		private void Form1_Load(object sender, EventArgs e)
 		{
@@ -50,8 +50,7 @@ namespace Rasterizer
         }
 
 		private void timer1_Tick(object sender, EventArgs e)
-		{
-            rotation += 0.01f;
+		{            
 			Invalidate();
 		}
 
@@ -66,7 +65,9 @@ namespace Rasterizer
 
             Matrix perspective = Matrix.perspective((float)Math.PI/2, (float)Width/Height,.1f,50);
             Matrix translation = Matrix.translate(new Vector3(0, 0, -5.0f));
-            Matrix rotationMatrix = Matrix.rotation(rotation, new Vector3(0, 1, 0));
+            Matrix rotationMatrixX = Matrix.rotation(rotationY, new Vector3(0, 1, 0));
+            Matrix rotationMatrixY = Matrix.rotation(rotationX, new Vector3(1, 0, 0));
+            Matrix rotationMatrix = rotationMatrixX * rotationMatrixY;
             float schermPositieX = 0, schermPositieY = 0;
 
             foreach (Vector3 v in vertices)
@@ -100,9 +101,45 @@ namespace Rasterizer
 			//g.DrawRectangle(pen, 50, 50, 10, 10);
 		}
 
+        private void Form1_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            
+        }
 
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            switch(e.KeyCode)
+            {
+                case Keys.Up:                    
+                    break;
+                case Keys.Down:
+                    break;
+            }
+        }
 
-
-
-	}
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            switch (e.KeyCode)
+            {
+                case Keys.W:
+                case Keys.Up:
+                    //Console.WriteLine("up down");
+                    rotationX -= rotationDelta;
+                    break;
+                case Keys.S:
+                case Keys.Down:
+                    rotationX += rotationDelta;
+                    break;
+                case Keys.A:
+                case Keys.Left:
+                    rotationY += rotationDelta;
+                    break;
+                case Keys.D:
+                case Keys.Right:
+                    rotationY -= rotationDelta;
+                    break;
+            }
+            //rotationY %= 1.6f;
+        }
+    }
 }
