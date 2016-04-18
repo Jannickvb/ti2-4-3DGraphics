@@ -19,7 +19,8 @@ namespace Rasterizer
 		}
 		List<Vector3> vertices = new List<Vector3>();
 		List<List<int>> polygons = new List<List<int>>();
-		float rotation = 0;
+        List<Vector3> dinges = new List<Vector3>();
+        float rotation = 0;
 
 
 		private void Form1_Load(object sender, EventArgs e)
@@ -60,7 +61,17 @@ namespace Rasterizer
                 g.DrawRectangle(pen, (int)schermPositieX-5, (int)schermPositieY-5, 10, 10);
             }
 
-            foreach(var pl in polygons)
+            foreach (Vector3 v in dinges)
+            {
+                Vector3 v1 = perspective * translation * rotationMatrix * v;
+                //                Console.WriteLine($"Width: {Width},Height: {Height}");
+                schermPositieX = Width / 2 + v1.x / v1.z * Width / 2;
+                schermPositieY = Height / 2 + v1.y / v1.z * Height / 2;
+
+                g.DrawRectangle(pen, (int)schermPositieX - 5, (int)schermPositieY - 5, 10, 10);
+            }
+
+            foreach (var pl in polygons)
             {
                 Point lastPoint = new Point(0, 0);
                 for(int i = 0; i <= pl.Count; i++)
@@ -160,6 +171,8 @@ namespace Rasterizer
 
         private void Bol()
         {
+
+            /*
             //bovenste rondje
             vertices.Add(new Vector3(1.0f, 2f, 1.0f));
             vertices.Add(new Vector3(1.5f, 2f, 0f));
@@ -187,8 +200,59 @@ namespace Rasterizer
             vertices.Add(new Vector3(0f, 3f, 0f));
 
             //onderkant
-            vertices.Add(new Vector3(0f, -3f, 0f));
-            polygons.Add(new List<int> { 0, 16, 4, 12, 17, 8 });
+            vertices.Add(new Vector3(0f, -2f, 0f));
+            polygons.Add(new List<int> { 1, 16, 5, 13, 17, 9 });
+            
+    */
+            //midden
+            vertices.Add(new Vector3(1.0f, 0f, 1.0f));
+            vertices.Add(new Vector3(1.5f, 0f, 0f));
+            vertices.Add(new Vector3(1.0f, 0f, -1.0f));
+            vertices.Add(new Vector3(0f, 0f, -1.5f));
+            vertices.Add(new Vector3(-1.0f, 0f, -1.0f));
+            vertices.Add(new Vector3(-1.5f, 0f, 0f));
+            vertices.Add(new Vector3(-1.0f, 0f, 1.0f));
+            vertices.Add(new Vector3(0f, 0f, 1.5f));
+            
+
+            Vector3 tr = new Vector3(0, 1f, 0);
+            Vector3 tr2 = new Vector3(0, -1f, 0);
+
+            Matrix translatie = Matrix.translate(tr);
+            Matrix translatie2 = Matrix.translate(tr2);
+            Matrix rotatie = Matrix.rotation((float)Math.PI / 4, new Vector3(0,0,0));
+            foreach (Vector3 vec in vertices)
+            {
+                //vertices 8 tm 15
+                Vector3 v1 = translatie * rotatie * vec;
+                dinges.Add(v1);
+            }
+            foreach (Vector3 vec in vertices)
+            {
+                //vertices 16 tm 23
+                Vector3 v2 = translatie2 * rotatie * vec;
+                dinges.Add(v2);
+            }
+
+
+            foreach (Vector3 vec in dinges)
+            {
+                vertices.Add(vec);
+            }
+            //24 en 25
+            vertices.Add(new Vector3(0f, 1.5f, 0f));
+            vertices.Add(new Vector3(0f, -1.5f, 0f));
+
+
+            //boven - midden - onder
+            polygons.Add(new List<int> { 8,     9,  10, 11, 12, 13, 14, 15 });
+            polygons.Add(new List<int> { 0,     1, 2, 3, 4, 5, 6, 7 });
+            polygons.Add(new List<int> { 16,    17, 18, 19, 20, 21, 22, 23 });
+
+            polygons.Add(new List<int> { 24, 8, 0, 16, 25, 20, 4, 12 });
+            polygons.Add(new List<int> { 24, 9, 1, 17, 25, 21, 5, 13 });
+            polygons.Add(new List<int> { 24, 10, 2, 18, 25, 22, 6, 14 });
+            polygons.Add(new List<int> { 24, 11, 3, 19, 25, 23, 7, 15 });
 
 
         }
