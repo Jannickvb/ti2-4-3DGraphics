@@ -33,7 +33,7 @@ namespace Rasterizer
             perspective.data[0, 0] = (float)(Math.Tan(fov / 2) / aspect);
             perspective.data[1, 1] = (float)(Math.Tan(fov / 2));
             perspective.data[2, 2] = zFar / (zFar - zNear);
-            perspective.data[2, 3] = (zNear*zFar) * (zFar-zNear);
+            perspective.data[2, 3] = (zNear*zFar) / (zFar-zNear);
             perspective.data[3, 2] = -1;
 
             return perspective;

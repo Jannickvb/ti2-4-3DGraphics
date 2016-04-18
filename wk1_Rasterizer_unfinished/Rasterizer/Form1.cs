@@ -43,7 +43,10 @@ namespace Rasterizer
             //vertices.Add(new Vector3() { x =  1f, y =  1f, z = 1f });
             //vertices.Add(new Vector3() { x = -1f, y =  1f, z = 1f });
 
-            polygons.Add(new List<int> { 1,2,3,4});
+            polygons.Add(new List<int> { 0,1,2,3});
+            polygons.Add(new List<int> { 4, 5, 6, 7});
+            polygons.Add(new List<int> { 0, 1, 5, 4 });
+            polygons.Add(new List<int> { 2, 3, 7, 6 });
         }
 
 		private void timer1_Tick(object sender, EventArgs e)
@@ -61,8 +64,8 @@ namespace Rasterizer
 
             
 
-            Matrix perspective = Matrix.perspective((float)Math.PI/2, 1.0f ,.1f,10f);
-            Matrix translation = Matrix.translate(new Vector3(0, 0, 0));
+            Matrix perspective = Matrix.perspective((float)Math.PI/2, (float)Width/Height,.1f,50);
+            Matrix translation = Matrix.translate(new Vector3(0, 0, -5.0f));
             Matrix rotationMatrix = Matrix.rotation(rotation, new Vector3(0, 1, 0));
             float schermPositieX = 0, schermPositieY = 0;
 
@@ -76,6 +79,24 @@ namespace Rasterizer
                 g.DrawRectangle(pen, (int)schermPositieX-5, (int)schermPositieY-5, 10, 10);
             }
 
+            foreach(var pl in polygons)
+            {
+                Point lastPoint = new Point(0, 0);
+                for(int i = 0; i <= pl.Count; i++)
+                {
+                    Vector3 p = perspective * translation * rotationMatrix * vertices[pl[i % pl.Count]];
+                    Point screenP = new Point((int)(Width / 2 + p.x / p.z * Width / 2),
+                                              (int)(Height / 2 + p.y / p.z * Height / 2));
+                    if (i == 0)
+                    {
+                        lastPoint = screenP;
+                        continue;
+                    }
+
+                    g.DrawLine(pen, screenP, lastPoint);
+                    lastPoint = screenP;
+                }
+            }
 			//g.DrawRectangle(pen, 50, 50, 10, 10);
 		}
 
