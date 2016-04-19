@@ -30,8 +30,8 @@ namespace Rasterizer
         {
             //Kubus();
             //Kegel();
-            Cilinder();
-            //Bol();
+            //Cilinder();
+            Bol();
         }
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -46,8 +46,6 @@ namespace Rasterizer
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.AntiAlias;
             Pen pen = new Pen(Color.Black, 2);
 
-
-
             Matrix perspective = Matrix.perspective((float)Math.PI / 2, (float)Width / Height, .1f, 50);
 
             Matrix translation = Matrix.translate(new Vector3(0, 0, -5.0f));
@@ -60,6 +58,16 @@ namespace Rasterizer
             if (showVerticals)
             {
                 foreach (Vector3 v in vertices)
+                {
+                    Vector3 v1 = perspective * translation * rotationMatrix * v;
+                    //                Console.WriteLine($"Width: {Width},Height: {Height}");
+                    schermPositieX = Width / 2 + v1.x / v1.z * Width / 2;
+                    schermPositieY = Height / 2 + v1.y / v1.z * Height / 2;
+
+                    g.DrawRectangle(pen, (int)schermPositieX - 5, (int)schermPositieY - 5, 10, 10);
+                }
+
+                foreach (Vector3 v in dinges)
                 {
                     Vector3 v1 = perspective * translation * rotationMatrix * v;
                     //                Console.WriteLine($"Width: {Width},Height: {Height}");
@@ -171,40 +179,90 @@ namespace Rasterizer
 
         private void Bol()
         {
-            dinges.Add(new Vector3(1.0f, 0f, 1.0f));
-            dinges.Add(new Vector3(1.5f, 0f, 0f));
-            dinges.Add(new Vector3(1.0f, 0f, -1.0f));
-            dinges.Add(new Vector3(0f, 0f, -1.5f));
-            dinges.Add(new Vector3(-1.0f, 0f, -1.0f));
-            dinges.Add(new Vector3(-1.5f, 0f, 0f));
-            dinges.Add(new Vector3(-1.0f, 0f, 1.0f));
-            dinges.Add(new Vector3(0f, 0f, 1.5f));
+
+            /*
+            //bovenste rondje
+            vertices.Add(new Vector3(1.0f, 2f, 1.0f));
+            vertices.Add(new Vector3(1.5f, 2f, 0f));
+            vertices.Add(new Vector3(1.0f, 2f, -1.0f));
+            vertices.Add(new Vector3(0f, 2f, -1.5f));
+            vertices.Add(new Vector3(-1.0f, 2f, -1.0f));
+            vertices.Add(new Vector3(-1.5f, 2f, 0f));
+            vertices.Add(new Vector3(-1.0f, 2f, 1.0f));
+            vertices.Add(new Vector3(0f, 2f, 1.5f));
+
+            polygons.Add(new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 });
+
+            //onderste rondje
+            vertices.Add(new Vector3(1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(1.5f, -1.0f, 0f));
+            vertices.Add(new Vector3(1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(0f, -1.0f, -1.5f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, -1.0f));
+            vertices.Add(new Vector3(-1.5f, -1.0f, 0f));
+            vertices.Add(new Vector3(-1.0f, -1.0f, 1.0f));
+            vertices.Add(new Vector3(0f, -1.0f, 1.5f));
+            polygons.Add(new List<int> { 8, 9, 10, 11, 12, 13, 14, 15 });
+
+            //topje
+            vertices.Add(new Vector3(0f, 3f, 0f));
+
+            //onderkant
+            vertices.Add(new Vector3(0f, -2f, 0f));
+            polygons.Add(new List<int> { 1, 16, 5, 13, 17, 9 });
+            
+    */
+            //midden
+            vertices.Add(new Vector3(1.0f, 0f, 1.0f));
+            vertices.Add(new Vector3(1.5f, 0f, 0f));
+            vertices.Add(new Vector3(1.0f, 0f, -1.0f));
+            vertices.Add(new Vector3(0f, 0f, -1.5f));
+            vertices.Add(new Vector3(-1.0f, 0f, -1.0f));
+            vertices.Add(new Vector3(-1.5f, 0f, 0f));
+            vertices.Add(new Vector3(-1.0f, 0f, 1.0f));
+            vertices.Add(new Vector3(0f, 0f, 1.5f));
+
+
+            Vector3 tr = new Vector3(0, 1f, 0);
+            Vector3 tr2 = new Vector3(0, -1f, 0);
+
+            Matrix translatie = Matrix.translate(tr);
+            Matrix translatie2 = Matrix.translate(tr2);
+            Matrix rotatie = Matrix.rotation((float)Math.PI / 4, new Vector3(0, 0, 0));
+            foreach (Vector3 vec in vertices)
+            {
+                //vertices 8 tm 15
+                Vector3 v1 = translatie * rotatie * vec;
+                dinges.Add(v1);
+            }
+            foreach (Vector3 vec in vertices)
+            {
+                //vertices 16 tm 23
+                Vector3 v2 = translatie2 * rotatie * vec;
+                dinges.Add(v2);
+            }
 
 
             foreach (Vector3 vec in dinges)
             {
                 vertices.Add(vec);
             }
+            //24 en 25
+            vertices.Add(new Vector3(0f, 1.5f, 0f));
+            vertices.Add(new Vector3(0f, -1.5f, 0f));
 
-            float rot = 0;
-            for (int i = 1; i < 7; i++)
-            {
-                rot += 1.8f;
-                Matrix rotatie = Matrix.rotation(rot, new Vector3(1, 0, 0));
-                foreach (Vector3 vec in dinges)
-                {
-                    Vector3 v1 = rotatie * vec;
-                    vertices.Add(v1);
-                }
-                
-                polygons.Add(new List<int> { 0+i*8, 1+i*8, 2+i*8, 3+i*8, 4+i*8, 5+i*8, 6+i*8, 7+i*8 });
-            }
 
-            polygons.Add(new List<int> { 1, 2, 3, 4, 5, 6, 7, 0 });
+            //boven - midden - onder
+            polygons.Add(new List<int> { 8, 9, 10, 11, 12, 13, 14, 15 });
+            polygons.Add(new List<int> { 0, 1, 2, 3, 4, 5, 6, 7 });
+            polygons.Add(new List<int> { 16, 17, 18, 19, 20, 21, 22, 23 });
 
-            polygons.Add(new List<int> { 0,18, 32, 50, 8,26,40,2,16,34,48,10,24,42 });
-            polygons.Add(new List<int> { 6,20,38,52,14,28,46,4,22,36,54,12,30,44});
-            polygons.Add(new List<int> { 7,19,39,51,15,27,47,3,23,35,55,11,31,43});
+            polygons.Add(new List<int> { 24, 8, 0, 16, 25, 20, 4, 12 });
+            polygons.Add(new List<int> { 24, 9, 1, 17, 25, 21, 5, 13 });
+            polygons.Add(new List<int> { 24, 10, 2, 18, 25, 22, 6, 14 });
+            polygons.Add(new List<int> { 24, 11, 3, 19, 25, 23, 7, 15 });
+
+
         }
 
         private void Form1_KeyPress(object sender, KeyPressEventArgs e)

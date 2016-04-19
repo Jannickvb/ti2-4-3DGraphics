@@ -1,0 +1,9 @@
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\bin\Debug\Rasterizer.exe.config
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\bin\Debug\Rasterizer.exe
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\bin\Debug\Rasterizer.pdb
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\obj\Debug\Rasterizer.csprojResolveAssemblyReference.cache
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\obj\Debug\Rasterizer.Form1.resources
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\obj\Debug\Rasterizer.Properties.Resources.resources
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\obj\Debug\Rasterizer.csproj.GenerateResource.Cache
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\obj\Debug\Rasterizer.exe
+D:\Source\Repos\3DGraphics\wk1_Rasterizer_unfinished\Rasterizer\obj\Debug\Rasterizer.pdb
